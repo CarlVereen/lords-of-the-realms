@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { joinGameRoom } from './net/colyseus';
 import { useConnectionStore } from './net/store';
 import { MapStage } from './render/MapStage';
+import { CountyPanel } from './ui/CountyPanel';
 
 export function App() {
   const status = useConnectionStore((state) => state.status);
@@ -28,15 +29,32 @@ export function App() {
   }, []);
 
   return (
-    <main style={{ fontFamily: 'system-ui, sans-serif', padding: 24 }}>
-      <h1>Lords of the Realms</h1>
-      <p style={{ color: '#666' }}>Milestone M0 — repo scaffold</p>
-      <p>
-        Server connection: <strong>{status}</strong>
-        {roomId ? ` — room ${roomId}` : ''}
-        {error ? ` — ${error}` : ''}
-      </p>
-      <MapStage />
-    </main>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <header
+        style={{
+          display: 'flex',
+          alignItems: 'baseline',
+          gap: 16,
+          padding: '10px 18px',
+          background: '#2b2117',
+          color: '#f0e7d2',
+        }}
+      >
+        <h1 style={{ margin: 0, fontFamily: 'Georgia, serif', fontSize: 20 }}>
+          Lords of the Realms
+        </h1>
+        <span style={{ fontSize: 12, color: '#c9bda0' }}>
+          Server: {status}
+          {roomId ? ` · room ${roomId}` : ''}
+          {error ? ` · ${error}` : ''}
+        </span>
+      </header>
+      <div style={{ display: 'flex', flex: 1, minHeight: 0 }}>
+        <div style={{ flex: 1, minHeight: 0 }}>
+          <MapStage />
+        </div>
+        <CountyPanel />
+      </div>
+    </div>
   );
 }

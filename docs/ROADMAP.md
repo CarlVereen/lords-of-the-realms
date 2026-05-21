@@ -8,7 +8,7 @@ met and this file's status line is updated.
 
 ## Status
 
-**M0 complete — repo scaffolded. Current milestone: M1.1 — map & county data.**
+**M0 and M1.1 complete. Current milestone: M1.2 — economy turn resolution.**
 
 Update this line whenever a milestone or sub-step completes.
 
@@ -65,9 +65,10 @@ packages and bundles the client. `CLAUDE.md` §10 updated with the real commands
 
 A complete, polished 1–2h solo game with no real-time battles. Built in verifiable sub-steps.
 
-- **M1.1 — Map & county data.** County content as typed TS modules; render the strategic map on
-  the Pixi canvas; pan/zoom; click to select a county.
-  *DoD: a ~6–8 county map renders and is selectable.*
+- **M1.1 — Map & county data.** ✅ DONE — 8 counties as typed TS modules in `@lor/shared`; a
+  polygon map rendered on the Pixi canvas with `pixi-viewport` pan/zoom; hover highlight and
+  click-to-select wired to a county-detail panel.
+  *DoD met: the 8-county map renders and is selectable — verified in-browser (Playwright).*
 - **M1.2 — Economy turn resolution.** Seasons, land use (crops/pasture/fallow), fertility, food
   production/consumption in `shared/sim` as pure functions.
   *DoD: turn resolution has unit + snapshot tests; the determinism test passes.*
