@@ -30,7 +30,8 @@ belong.
    "Modernized UX" exists specifically to cut the 1994 original's tedious micromanagement.
 2. **The county is alive.** Population, land, and seasons visibly react to how you rule.
 3. **Two roads to victory.** The warlord and the prosperous lord are both valid ways to win.
-4. **One good evening.** A complete, satisfying game finishes in 1–2 hours.
+4. **One good evening.** The Small map delivers a complete, satisfying game in 1–2 hours; the
+   Realm map (30 counties) is the epic, long-form option for players who want it.
 
 ## 4. Core Gameplay Loop
 
@@ -52,9 +53,13 @@ highest composite score wins.
 
 ## 6. Match Shape
 
-2–4 players, free-for-all. 1–2 hours per game. Live, synchronized sessions (all players online
-together). Map of ~6–12 counties, sized to the time target. MVP supports 2 players including
-human-vs-AI.
+2–4 players, free-for-all. Live, synchronized sessions (all players online together). MVP
+supports 2 players including human-vs-AI.
+
+**Map size is a match setting.** Two maps: the **Small Realm** (~12 counties — the 1–2 hour
+"one good evening" game) and the **Realm of England** (30 counties — an epic, multi-hour game in
+the spirit of the 1994 original). Maps are procedurally generated (Voronoi) into typed data; see
+`packages/shared/src/map/`.
 
 ---
 

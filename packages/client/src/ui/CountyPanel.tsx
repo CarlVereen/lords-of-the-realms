@@ -1,4 +1,5 @@
-import { countyById } from '@lor/shared';
+import { getMap } from '@lor/shared';
+import { useMapStore } from '../state/mapStore';
 import { useSelectionStore } from '../state/selectionStore';
 
 /**
@@ -6,11 +7,15 @@ import { useSelectionStore } from '../state/selectionStore';
  * empty state; from M1.2 its body fills with economy, population, and army
  * management for the selected county.
  *
- * This is the only React consumer of the selection store (see CLAUDE.md §11).
+ * The only React consumer of the selection store (see CLAUDE.md §11).
  */
 export function CountyPanel() {
+  const currentMapId = useMapStore((state) => state.currentMapId);
   const selectedCountyId = useSelectionStore((state) => state.selectedCountyId);
-  const county = selectedCountyId ? countyById[selectedCountyId] : null;
+  const map = getMap(currentMapId);
+  const county = selectedCountyId
+    ? (map.counties.find((candidate) => candidate.id === selectedCountyId) ?? null)
+    : null;
 
   return (
     <aside

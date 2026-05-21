@@ -65,10 +65,12 @@ packages and bundles the client. `CLAUDE.md` §10 updated with the real commands
 
 A complete, polished 1–2h solo game with no real-time battles. Built in verifiable sub-steps.
 
-- **M1.1 — Map & county data.** ✅ DONE — 8 counties as typed TS modules in `@lor/shared`; a
+- **M1.1 — Map & county data.** ✅ DONE — counties as typed TS modules in `@lor/shared`; a
   polygon map rendered on the Pixi canvas with `pixi-viewport` pan/zoom; hover highlight and
   click-to-select wired to a county-detail panel.
-  *DoD met: the 8-county map renders and is selectable — verified in-browser (Playwright).*
+  *DoD met: the county map renders and is selectable — verified in-browser (Playwright).*
+  Expanded post-M1.1: two **procedurally generated** (Voronoi) maps — a 12-county Small Realm
+  and a 30-county Realm of England — chosen via a map-size match setting.
 - **M1.2 — Economy turn resolution.** Seasons, land use (crops/pasture/fallow), fertility, food
   production/consumption in `shared/sim` as pure functions.
   *DoD: turn resolution has unit + snapshot tests; the determinism test passes.*

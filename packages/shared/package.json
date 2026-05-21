@@ -7,6 +7,12 @@
     ".": "./src/index.ts"
   },
   "scripts": {
-    "build": "tsc --noEmit"
+    "build": "tsc --noEmit",
+    "generate-maps": "tsx scripts/generate-maps.ts"
+  },
+  "devDependencies": {
+    "@types/d3-delaunay": "^6.0.4",
+    "d3-delaunay": "^6.0.4",
+    "tsx": "^4.19.0"
   }
 }

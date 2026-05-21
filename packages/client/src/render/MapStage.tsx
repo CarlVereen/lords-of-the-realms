@@ -1,7 +1,8 @@
-import { MAP_HEIGHT, MAP_WIDTH } from '@lor/shared';
+import { getMap } from '@lor/shared';
 import { Viewport } from 'pixi-viewport';
 import { Application, Graphics } from 'pixi.js';
 import { useEffect, useRef } from 'react';
+import { useMapStore } from '../state/mapStore';
 import { useSelectionStore } from '../state/selectionStore';
 import { CountyMap } from './CountyMap';
 
@@ -9,21 +10,26 @@ const SEA_COLOR = 0x3a6b86;
 
 /**
  * Hosts the Pixi strategic map: a `pixi-viewport` camera (pan / zoom) containing
- * the sea background and the `CountyMap` renderer.
+ * the sea background and the `CountyMap` renderer for the current map.
  *
- * This component never reads selection through a React hook — it bridges the
- * selection store to the renderer imperatively (CLAUDE.md §11). The effect runs
- * once; its cleanup tears the whole Pixi tree down so React 19 StrictMode's dev
- * double-mount cannot leak.
+ * The effect rebuilds the whole Pixi scene when the current map changes (a rare,
+ * deliberate action). Selection is bridged to the renderer imperatively, so a
+ * selection change never re-renders this component (CLAUDE.md §11). Cleanup
+ * tears the Pixi tree down so React 19 StrictMode's dev double-mount cannot leak.
  */
 export function MapStage() {
   const hostRef = useRef<HTMLDivElement>(null);
+  const currentMapId = useMapStore((state) => state.currentMapId);
 
   useEffect(() => {
     const host = hostRef.current;
     if (!host) {
       return;
     }
+
+    const map = getMap(currentMapId);
+    // A freshly built map starts with nothing selected.
+    useSelectionStore.getState().selectCounty(null);
 
     const app = new Application();
     let disposed = false;
@@ -46,8 +52,8 @@ export function MapStage() {
         const viewport = new Viewport({
           screenWidth: app.renderer.width,
           screenHeight: app.renderer.height,
-          worldWidth: MAP_WIDTH,
-          worldHeight: MAP_HEIGHT,
+          worldWidth: map.width,
+          worldHeight: map.height,
           events: app.renderer.events,
         });
         viewport
@@ -59,7 +65,7 @@ export function MapStage() {
         app.stage.addChild(viewport);
 
         // Sea background — also the deselect target (a click on open water).
-        const sea = new Graphics().rect(0, 0, MAP_WIDTH, MAP_HEIGHT).fill(SEA_COLOR);
+        const sea = new Graphics().rect(0, 0, map.width, map.height).fill(SEA_COLOR);
         sea.eventMode = 'static';
         let seaDownAt: { x: number; y: number } | null = null;
         sea.on('pointerdown', (event) => {
@@ -78,7 +84,7 @@ export function MapStage() {
         });
         viewport.addChild(sea);
 
-        const countyMap = new CountyMap((id) => {
+        const countyMap = new CountyMap(map, (id) => {
           useSelectionStore.getState().selectCounty(id);
         });
         viewport.addChild(countyMap.container);
@@ -105,11 +111,11 @@ export function MapStage() {
             return;
           }
           app.renderer.resize(width, height);
-          viewport.resize(width, height, MAP_WIDTH, MAP_HEIGHT);
+          viewport.resize(width, height, map.width, map.height);
           if (!framed) {
             framed = true;
             viewport.fit();
-            viewport.moveCenter(MAP_WIDTH / 2, MAP_HEIGHT / 2);
+            viewport.moveCenter(map.width / 2, map.height / 2);
           }
           syncZoom();
         });
@@ -130,7 +136,7 @@ export function MapStage() {
         cleanup();
       }
     };
-  }, []);
+  }, [currentMapId]);
 
   return <div ref={hostRef} style={{ width: '100%', height: '100%' }} />;
 }

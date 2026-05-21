@@ -1,13 +1,16 @@
+import { MAPS, type MapId } from '@lor/shared';
 import { useEffect } from 'react';
 import { joinGameRoom } from './net/colyseus';
 import { useConnectionStore } from './net/store';
 import { MapStage } from './render/MapStage';
+import { useMapStore } from './state/mapStore';
 import { CountyPanel } from './ui/CountyPanel';
 
 export function App() {
   const status = useConnectionStore((state) => state.status);
   const roomId = useConnectionStore((state) => state.roomId);
   const error = useConnectionStore((state) => state.error);
+  const currentMapId = useMapStore((state) => state.currentMapId);
 
   useEffect(() => {
     const { setConnecting, setConnected, setError } = useConnectionStore.getState();
@@ -33,7 +36,7 @@ export function App() {
       <header
         style={{
           display: 'flex',
-          alignItems: 'baseline',
+          alignItems: 'center',
           gap: 16,
           padding: '10px 18px',
           background: '#2b2117',
@@ -48,6 +51,30 @@ export function App() {
           {roomId ? ` · room ${roomId}` : ''}
           {error ? ` · ${error}` : ''}
         </span>
+        <label
+          style={{
+            marginLeft: 'auto',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 6,
+            fontSize: 12,
+            color: '#c9bda0',
+          }}
+        >
+          Map
+          <select
+            value={currentMapId}
+            onChange={(event) => {
+              useMapStore.getState().setMap(event.target.value as MapId);
+            }}
+          >
+            {Object.values(MAPS).map((gameMap) => (
+              <option key={gameMap.id} value={gameMap.id}>
+                {gameMap.name} ({gameMap.counties.length})
+              </option>
+            ))}
+          </select>
+        </label>
       </header>
       <div style={{ display: 'flex', flex: 1, minHeight: 0 }}>
         <div style={{ flex: 1, minHeight: 0 }}>
