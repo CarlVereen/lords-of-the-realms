@@ -8,7 +8,7 @@ met and this file's status line is updated.
 
 ## Status
 
-**M0 and M1.1 complete. Current milestone: M1.2 — economy turn resolution.**
+**M0, M1.1, and M1.2 complete. Current milestone: M1.3 — population, happiness, taxes.**
 
 Update this line whenever a milestone or sub-step completes.
 
@@ -71,9 +71,11 @@ A complete, polished 1–2h solo game with no real-time battles. Built in verifi
   *DoD met: the county map renders and is selectable — verified in-browser (Playwright).*
   Expanded post-M1.1: two **procedurally generated** (Voronoi) maps — a 12-county Small Realm
   and a 30-county Realm of England — chosen via a map-size match setting.
-- **M1.2 — Economy turn resolution.** Seasons, land use (crops/pasture/fallow), fertility, food
-  production/consumption in `shared/sim` as pure functions.
-  *DoD: turn resolution has unit + snapshot tests; the determinism test passes.*
+- **M1.2 — Economy turn resolution.** ✅ DONE — seasons, land use (crops/pasture/fallow),
+  fertility, food production/consumption in `shared/sim` as pure functions; a thin county
+  economy panel (land allocation, projection, last-turn report) with an Advance Turn button.
+  *DoD met: turn resolution has unit + snapshot tests and the determinism test passes (51
+  tests green); `pnpm dev` shows a county's economy resolve turn by turn.*
 - **M1.3 — Population, happiness, taxes.** Population growth/decline, happiness drivers, taxes
   → coin, revolts.
   *DoD: tested; a player can run several turns and see population/happiness respond.*
